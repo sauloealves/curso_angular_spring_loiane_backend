@@ -1,5 +1,7 @@
 package com.saulo.curdspring.model;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,6 +18,8 @@ import lombok.Data;
 
 @Data
 @Entity
+@SQLDelete(sql = "UPDATE Cursos SET status = 'Inativo' WHERE id = ?" )
+@Where(clause = "status = 'Ativo'")
 @Table(name = "cursos")
 public class Course {
     
@@ -36,4 +40,11 @@ public class Course {
     @Pattern(regexp = "Back-end|Front-end")
     @Column(length = 10, nullable = false)
     private String category;
+
+    @NotNull
+    @NotBlank
+    @Length(max = 10)
+    @Pattern(regexp = "Ativo|Inativo")
+    @Column(length = 10, nullable = false)
+    private String status = "Ativo";
 }
